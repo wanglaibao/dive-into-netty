@@ -4,6 +4,9 @@
     <groupId>com.laibao.netty</groupId>
     <artifactId>dive-into-netty</artifactId>
     <version>1.0.0</version>
+    <modules>
+        <module>first-things-first</module>
+    </modules>
     <packaging>pom</packaging>
 
     <developers>
@@ -30,6 +33,23 @@
         <junit.version>4.12</junit.version>
     </properties>
 
+    <dependencies>
+        <!-- https://mvnrepository.com/artifact/io.netty/netty-all -->
+        <!--
+        <dependency>
+            <groupId>io.netty</groupId>
+            <artifactId>netty-all</artifactId>
+            <version>4.1.43.Final</version>
+        </dependency>
+        -->
+        <!-- https://mvnrepository.com/artifact/junit/junit -->
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
     <build>
         <plugins>
             <plugin>
