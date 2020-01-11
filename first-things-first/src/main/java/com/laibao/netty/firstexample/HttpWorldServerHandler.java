@@ -9,6 +9,10 @@ import io.netty.util.CharsetUtil;
 
 import java.net.URI;
 
+/**
+ * 该类实现了ChannelInboundHandler接口,表示处理进入的请求
+ * 如果实现了ChannelOutboundHandler接口,表示处理出去的请求
+ */
 public class HttpWorldServerHandler extends SimpleChannelInboundHandler<HttpObject> {
 
     @Override
@@ -29,6 +33,10 @@ public class HttpWorldServerHandler extends SimpleChannelInboundHandler<HttpObje
 
 
             ByteBuf content = Unpooled.copiedBuffer("Hello World", CharsetUtil.UTF_8);
+
+            /**
+             * 构造一个http响应,HttpVersion.HTTP_1_1:采用http1.1协议，HttpResponseStatus.OK：状态码200
+             */
             FullHttpResponse response = new DefaultFullHttpResponse(HttpVersion.HTTP_1_1,
                     HttpResponseStatus.OK, content);
             response.headers().set(HttpHeaderNames.CONTENT_TYPE, "text/plain");
@@ -36,11 +44,28 @@ public class HttpWorldServerHandler extends SimpleChannelInboundHandler<HttpObje
 
             System.out.println("channel do business processing  444444444444444");
 
+            /**
+             * 如果只是调用write方法，他仅仅是存在缓冲区里，并不会返回客户端
+             * 调用writeAndFlush可以
+             */
             ctx.writeAndFlush(response);
             //ctx.channel().close();
         }
     }
 
+
+    /**
+     * 下列各个方法的调用顺序如下：
+     *          handlerAdded
+     *          channelRegistered
+     *          channelActive
+     *          请求方法名:GET【channelRead0】
+     *          【下面的表示的是断开连接后】
+     *              1.如果是使用curl ：连接会立刻关闭
+     *              2.如果是浏览器访问，http1.0：它是短连接，会立刻关闭。http1.1，是长连接，连接保持一段时间
+     *          channelInactive
+     *          channelUnregistered
+     */
 
     @Override
     public void handlerAdded(ChannelHandlerContext ctx) throws Exception {
