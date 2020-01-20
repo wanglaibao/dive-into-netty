@@ -13,7 +13,7 @@ public class NioTest2 {
     private static final String FILE_PATH = "NioTest2.txt";
 
     @Test
-    public void testGetChannelFromInputStream() throws IOException {
+    public void testReadDataFromFile() throws IOException {
 
         try( FileInputStream fileInputStream = new FileInputStream(FILE_PATH)) {
 
