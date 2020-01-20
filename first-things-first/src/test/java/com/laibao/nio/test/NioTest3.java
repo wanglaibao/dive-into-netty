@@ -9,7 +9,7 @@ import java.nio.channels.FileChannel;
 
 public class NioTest3 {
 
-    private static final String FILE_PATH = "D:\\IdeaProjects\\git\\dive-into-netty\\first-things-first\\src\\test\\resources\\NioTest3.txt";
+    private static final String FILE_PATH = "NioTest3.txt";
 
     @Test
     public void testWriteDataToFile() throws IOException {
