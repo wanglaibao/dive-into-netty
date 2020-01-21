@@ -10,9 +10,9 @@ import java.nio.channels.FileChannel;
 
 public class NioTest4 {
 
-    private static final String INPUT_FILE_PATH = "D:\\IdeaProjects\\git\\dive-into-netty\\first-things-first\\src\\test\\resources\\input.txt";
+    private static final String INPUT_FILE_PATH = "input.txt";
 
-    private static final String OUTPUT_FILE_PATH = "D:\\IdeaProjects\\git\\dive-into-netty\\first-things-first\\src\\test\\resources\\output.txt";
+    private static final String OUTPUT_FILE_PATH = "output.txt";
 
     @Test
     public void testReadFromOneFileAndWriteToAnotherFile() throws IOException {
@@ -41,8 +41,6 @@ public class NioTest4 {
                 outputChannel.write(buffer);
             }
 
-            inputChannel.close();
-            outputChannel.close();
         }
 
 
