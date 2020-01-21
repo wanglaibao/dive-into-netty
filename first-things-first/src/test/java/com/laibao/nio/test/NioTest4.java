@@ -10,20 +10,23 @@ import java.nio.channels.FileChannel;
 
 public class NioTest4 {
 
+    private static final String INPUT_FILE_PATH = "D:\\IdeaProjects\\git\\dive-into-netty\\first-things-first\\src\\test\\resources\\input.txt";
+
+    private static final String OUTPUT_FILE_PATH = "D:\\IdeaProjects\\git\\dive-into-netty\\first-things-first\\src\\test\\resources\\output.txt";
 
     @Test
-    public static void testReadFromOneFileAndWriteToAnotherFile() throws IOException {
+    public void testReadFromOneFileAndWriteToAnotherFile() throws IOException {
 
 
-        try(FileInputStream inputStream = new FileInputStream("input.txt");
-            FileOutputStream outputStream = new FileOutputStream("output.txt")) {
+        try(FileInputStream inputStream = new FileInputStream(INPUT_FILE_PATH);
+            FileOutputStream outputStream = new FileOutputStream(OUTPUT_FILE_PATH)) {
             FileChannel inputChannel = inputStream.getChannel();
             FileChannel outputChannel = outputStream.getChannel();
 
             ByteBuffer buffer = ByteBuffer.allocate(512);
 
             while(true) {
-//            buffer.clear(); // 如果注释掉该行代码会发生什么情况？
+                buffer.clear(); // 如果注释掉该行代码会发生什么情况？
 
                 int read = inputChannel.read(buffer);
 
