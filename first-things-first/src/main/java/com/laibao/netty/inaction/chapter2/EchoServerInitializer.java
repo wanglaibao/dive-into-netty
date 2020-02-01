@@ -10,6 +10,6 @@ public class EchoServerInitializer extends ChannelInitializer<SocketChannel> {
     public void initChannel(SocketChannel socketChannel) throws Exception {
         final EchoServerHandler serverHandler = new EchoServerHandler();
         ChannelPipeline pipeline = socketChannel.pipeline();
-        pipeline.addLast(serverHandler);
+        pipeline.addLast("serverHandler",serverHandler);
     }
 }
