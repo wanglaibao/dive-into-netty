@@ -2,7 +2,7 @@ package com.laibao.netty.inaction.chapter2;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.channel.ChannelHandler;
+import io.netty.channel.ChannelHandler.Sharable;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.util.CharsetUtil;
@@ -11,7 +11,7 @@ import io.netty.util.CharsetUtil;
  * 客户端的 ChannelHandler
  *
  */
-@ChannelHandler.Sharable
+@Sharable
 //标记该类的实例可以被多个Channel共享
 public class EchoClientHandler  extends SimpleChannelInboundHandler<ByteBuf> {
 
