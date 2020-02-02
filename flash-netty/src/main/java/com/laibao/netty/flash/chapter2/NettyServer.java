@@ -48,8 +48,8 @@ public class NettyServer {
                     }
                 });
 
-        //serverBootstrap.bind(8001);
-
+        /*
+        serverBootstrap.bind(8001);
         serverBootstrap.bind(8001).addListener(new GenericFutureListener<Future<? super Void>>() {
             public void operationComplete(Future<? super Void> future) {
                 if (future.isSuccess()) {
@@ -59,6 +59,23 @@ public class NettyServer {
                 }
             }
         });
+        */
 
+        bind(serverBootstrap, 1000);
+
+    }
+
+
+    private static void bind(final ServerBootstrap serverBootstrap, final int port) {
+        serverBootstrap.bind(port).addListener(new GenericFutureListener<Future<? super Void>>() {
+            public void operationComplete(Future<? super Void> future) {
+                if (future.isSuccess()) {
+                    System.out.println("端口[" + port + "]绑定成功!");
+                } else {
+                    System.err.println("端口[" + port + "]绑定失败!");
+                    bind(serverBootstrap, port + 1);
+                }
+            }
+        });
     }
 }
