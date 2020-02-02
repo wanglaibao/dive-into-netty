@@ -1,4 +1,4 @@
-package com.laibao.netty.practiceandprogress;
+package com.laibao.netty.practiceandprogress.ch1;
 
 import java.net.ServerSocket;
 import java.net.Socket;
