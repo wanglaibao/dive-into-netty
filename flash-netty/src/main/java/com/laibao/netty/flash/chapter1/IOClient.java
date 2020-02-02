@@ -1,4 +1,4 @@
-package com.laibao.netty.flash;
+package com.laibao.netty.flash.chapter1;
 
 import java.net.Socket;
 import java.time.LocalDate;
