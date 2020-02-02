@@ -2,9 +2,11 @@ package com.laibao.netty.flash.chapter2;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelInitializer;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 
@@ -32,19 +34,57 @@ public class NettyServer {
      *
      */
 
+    private static final int BEGIN_PORT = 8000;
+
+    private static final AttributeKey<Object> SERVER_NAME_KEY = AttributeKey.newInstance("clientKey");
+
+    private static final AttributeKey<Object> CLIENT_KEY = AttributeKey.newInstance("clientKey");
+
+    private static final String SERVER_NAME_VALUE = "nettyServer";
+
+    private static final String CLIENT_VALUE = "clientValue";
+
     public static void main(String[] args) {
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1);
 
         NioEventLoopGroup workerGroup = new NioEventLoopGroup();
 
-        ServerBootstrap serverBootstrap = new ServerBootstrap();
+        final ServerBootstrap serverBootstrap = new ServerBootstrap();
 
         serverBootstrap
                 .group(bossGroup, workerGroup)
                 .channel(NioServerSocketChannel.class)
+
+                .attr(SERVER_NAME_KEY,SERVER_NAME_VALUE)
+                .option(ChannelOption.SO_BACKLOG,1024)
+
+                .childAttr(CLIENT_KEY, CLIENT_VALUE)
+                .childOption(ChannelOption.SO_KEEPALIVE, true)
+                .childOption(ChannelOption.SO_REUSEADDR, true)
+                .childOption(ChannelOption.TCP_NODELAY, true)
+
+                .handler(new ChannelInitializer<NioSocketChannel>() {
+                    /**
+                     * 这里的代码逻辑在服务端启动的时候进行调用的【此时还没有客户端的Socket连接到服务器】
+                     *
+                     */
+
+                    protected void initChannel(NioSocketChannel socketChannel) {
+                        System.out.println("服务端正在初始化中......");
+                        System.out.println(socketChannel.attr(SERVER_NAME_KEY).get());
+                    }
+                })
                 .childHandler(new ChannelInitializer<NioSocketChannel>() {
+
+                    /**
+                     * 这里的代码逻辑在客户端的Socket连接到服务器端的时候进行调用的
+                     * 可以通过 telnet 127.0.0.1 8000 来进行测试
+                     *
+                     */
+
                     protected void initChannel(NioSocketChannel socketChannel) {
                         System.out.println("hello,jinGe");
+                        System.out.println(socketChannel.attr(CLIENT_KEY).get());
                     }
                 });
 
@@ -61,11 +101,16 @@ public class NettyServer {
         });
         */
 
-        bind(serverBootstrap, 1000);
+        bind(serverBootstrap, BEGIN_PORT);
 
     }
 
 
+    /**
+     *
+     * @param serverBootstrap
+     * @param port
+     */
     private static void bind(final ServerBootstrap serverBootstrap, final int port) {
         serverBootstrap.bind(port).addListener(new GenericFutureListener<Future<? super Void>>() {
             public void operationComplete(Future<? super Void> future) {
