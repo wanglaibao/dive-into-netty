@@ -8,6 +8,7 @@
         <module>first-things-first</module>
         <module>practice-and-progress</module>
         <module>flash-netty</module>
+        <module>fight-netty</module>
     </modules>
     <packaging>pom</packaging>
 
