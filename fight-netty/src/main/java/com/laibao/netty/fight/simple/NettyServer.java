@@ -55,7 +55,7 @@ public class NettyServer {
                             System.out.println("客户socketchannel hashcode=" + socketChannel.hashCode());
 
                             //可以使用一个集合管理SocketChannel,再推送消息时,可以将业务加入到各个channel对应的NIOEventLoop的taskQueue或者scheduleTaskQueue
-                            pipeline.addLast(new NettyServerHandler());
+                            pipeline.addLast("serverHandler",new NettyServerHandler());
                         }
                     });
 
