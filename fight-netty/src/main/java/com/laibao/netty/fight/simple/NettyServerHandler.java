@@ -37,7 +37,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             public void run() {
 
                 try {
-                    Thread.sleep(5 * 1000);
+                    Thread.sleep(10 * 1000);
                     ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵2", CharsetUtil.UTF_8));
                     System.out.println("channel code=" + ctx.channel().hashCode());
                 } catch (Exception ex) {
@@ -51,8 +51,23 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
             public void run() {
 
                 try {
-                    Thread.sleep(5 * 1000);
+                    Thread.sleep(20 * 1000);
                     ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵3", CharsetUtil.UTF_8));
+                    System.out.println("channel code=" + ctx.channel().hashCode());
+                } catch (Exception ex) {
+                    System.out.println("发生异常" + ex.getMessage());
+                }
+            }
+        });
+
+
+         ctx.channel().eventLoop().execute(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+                    Thread.sleep(30 * 1000);
+                    ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵4", CharsetUtil.UTF_8));
                     System.out.println("channel code=" + ctx.channel().hashCode());
                 } catch (Exception ex) {
                     System.out.println("发生异常" + ex.getMessage());
@@ -68,7 +83,7 @@ public class NettyServerHandler extends ChannelInboundHandlerAdapter {
 
                 try {
                     Thread.sleep(5 * 1000);
-                    ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵4", CharsetUtil.UTF_8));
+                    ctx.writeAndFlush(Unpooled.copiedBuffer("hello, 客户端~(>^ω^<)喵5", CharsetUtil.UTF_8));
                     System.out.println("channel code=" + ctx.channel().hashCode());
                 } catch (Exception ex) {
                     System.out.println("发生异常" + ex.getMessage());
