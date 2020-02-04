@@ -9,6 +9,8 @@
         <module>practice-and-progress</module>
         <module>flash-netty</module>
         <module>fight-netty</module>
+        <module>java-designpattern</module>
+        <module>java-datastructure</module>
     </modules>
     <packaging>pom</packaging>
 
