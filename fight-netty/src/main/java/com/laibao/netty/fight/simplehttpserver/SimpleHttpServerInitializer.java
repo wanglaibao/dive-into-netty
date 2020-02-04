@@ -1,6 +1,5 @@
 package com.laibao.netty.fight.simplehttpserver;
 
-import com.atguigu.netty.http.SimpleHttpServerHandler;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
 import io.netty.channel.socket.nio.NioSocketChannel;
