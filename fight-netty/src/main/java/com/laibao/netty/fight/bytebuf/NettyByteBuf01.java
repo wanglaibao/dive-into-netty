@@ -23,13 +23,17 @@ public class NettyByteBuf01 {
         }
 
         System.out.println("capacity=" + buffer.capacity());//10
-        //输出
-//        for(int i = 0; i<buffer.capacity(); i++) {
-//            System.out.println(buffer.getByte(i));
-//        }
+
+        //第一次这么输出 此时readerindex不会发生变化
+        for(int i = 0; i<buffer.capacity(); i++) {
+            System.out.println(buffer.getByte(i));
+        }
+
+        //第二次如下面这样输出 此时readerindex不断增大
+        /*
         for(int i = 0; i < buffer.capacity(); i++) {
             System.out.println(buffer.readByte());
-        }
+        }*/
         System.out.println("执行完毕");
     }
 }
