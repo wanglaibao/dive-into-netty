@@ -11,6 +11,7 @@
         <module>fight-netty</module>
         <module>java-designpattern</module>
         <module>java-datastructure</module>
+        <module>java-threads-and-concurrency</module>
     </modules>
     <packaging>pom</packaging>
 
