@@ -12,6 +12,7 @@
         <module>java-designpattern</module>
         <module>java-datastructure</module>
         <module>java-threads-and-concurrency</module>
+        <module>java-io-and-socket</module>
     </modules>
     <packaging>pom</packaging>
 
