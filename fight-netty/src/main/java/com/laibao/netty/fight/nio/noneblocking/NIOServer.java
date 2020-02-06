@@ -7,26 +7,28 @@ import java.util.Iterator;
 import java.util.Set;
 
 public class NIOServer {
+
     public static void main(String[] args) throws Exception{
 
         //创建ServerSocketChannel -> ServerSocket
-
         ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 
         //得到一个Selecor对象
-        Selector selector = Selector.open();
+        //Selector selector = Selector.open();
 
         //绑定一个端口6666, 在服务器端监听
         serverSocketChannel.socket().bind(new InetSocketAddress(6666));
         //设置为非阻塞
         serverSocketChannel.configureBlocking(false);
 
+        //得到一个Selecor对象
+        Selector selector = Selector.open();
+
         //把 serverSocketChannel 注册到  selector 关心 事件为 OP_ACCEPT
         serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
 
+
         System.out.println("注册后的selectionkey 数量=" + selector.keys().size()); // 1
-
-
 
         //循环等待客户端连接
         while (true) {
