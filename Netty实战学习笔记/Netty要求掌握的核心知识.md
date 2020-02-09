@@ -79,7 +79,7 @@
 
 * 数据容器【零拷贝】
 
-     ByteBuffer
+     UnPooled,ByteBuffer
 
 * 事件处理器
     ChannelHandler
@@ -99,6 +99,9 @@
 * 链式管道
     PipeLine
     ChannelPipeLine
+    ChannelHandlerContext
+    ChannelOption
+    ChannelConfig
 
 
 
