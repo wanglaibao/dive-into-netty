@@ -63,6 +63,40 @@
 * ChannelHandler的链式调用机制
 
 
+## Netty核心组件
+
+* 服务引导启动类
+    Bootstrap ServerBootstrap AbstractBootstrap
+
+* 网络传输模型
+    Channel SocketChannel ServerSocketChannel
+    NioSocketChannel NioServerSocketChannel
+    OioSocketChannel OioServerSocketChannel
+    EPollSocketChannel EPollServerSocketChannel
+
+* IO多路复用选择器
+    Selector
+
+* 数据容器【零拷贝】
+
+     ByteBuffer
+
+* 事件处理器
+    ChannelHandler
+
+* 线程池以及线程模型
+    EventLoop,NioEventLoop
+    EventLoopGroup,NioEventLoopGroup
+
+* 异步模型
+   Future,ChannelFuture
+   Promise,ChannelPromise
+
+* 事件监听器
+  GenericFutureListener
+  ChannelFutureListener
+
+
 
 
 
