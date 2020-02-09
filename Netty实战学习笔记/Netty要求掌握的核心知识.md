@@ -88,13 +88,17 @@
     EventLoop,NioEventLoop
     EventLoopGroup,NioEventLoopGroup
 
-* 异步模型
+* 异步模型【事件回调机制】
    Future,ChannelFuture
    Promise,ChannelPromise
 
 * 事件监听器
   GenericFutureListener
   ChannelFutureListener
+
+* 链式管道
+    PipeLine
+    ChannelPipeLine
 
 
 
