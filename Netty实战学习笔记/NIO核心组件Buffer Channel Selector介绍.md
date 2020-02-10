@@ -1,4 +1,4 @@
-##  Java NIO：Buffer、Channel 和 Selector
+##  Java NIO：Buffer、Channel 和 Selector介绍
 
 [TOC]
 
@@ -438,4 +438,4 @@ Channel 基本上只和 Buffer 打交道，最重要的接口就是 channel.read
 
 Selector 用于实现非阻塞 IO，这里仅仅介绍接口使用，后续请关注非阻塞 IO 的介绍。
 
-（全文完）
+(全文完)
