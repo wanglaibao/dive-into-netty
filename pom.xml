@@ -14,6 +14,7 @@
         <module>java-threads-and-concurrency</module>
         <module>java-io-and-socket</module>
         <module>netty-example-learning</module>
+        <module>java8_recipes</module>
     </modules>
     <packaging>pom</packaging>
 
