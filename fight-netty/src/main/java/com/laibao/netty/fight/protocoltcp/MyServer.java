@@ -8,6 +8,7 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 public class MyServer {
+
     public static void main(String[] args) throws Exception{
 
         EventLoopGroup bossGroup = new NioEventLoopGroup(1);
@@ -16,15 +17,23 @@ public class MyServer {
         try {
 
             ServerBootstrap serverBootstrap = new ServerBootstrap();
-            serverBootstrap.group(bossGroup,workerGroup).channel(NioServerSocketChannel.class).childHandler(new MyServerInitializer()); //自定义一个初始化类
-
+            /**
+             * 配置引导程序
+             */
+            serverBootstrap.group(bossGroup,workerGroup)
+                            .channel(NioServerSocketChannel.class)
+                            .childHandler(new MyServerInitializer()); //自定义一个初始化类
 
             ChannelFuture channelFuture = serverBootstrap.bind(7000).sync();
             channelFuture.channel().closeFuture().sync();
 
         }finally {
+            /**
+             * 优雅关闭
+             */
             bossGroup.shutdownGracefully();
             workerGroup.shutdownGracefully();
+            System.out.println();
         }
 
     }
