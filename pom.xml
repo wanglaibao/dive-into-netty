@@ -13,6 +13,7 @@
         <module>java-datastructure</module>
         <module>java-threads-and-concurrency</module>
         <module>java-io-and-socket</module>
+        <module>netty-example-learning</module>
     </modules>
     <packaging>pom</packaging>
 
