@@ -16,7 +16,7 @@ public class LambdasDemo {
                                              "list", "of", "strings");
 
         // Java 7 syntax
-        System.out.println("Printing using anonymous inner class:");
+        System.out.println("com.laibao.java8.recipes.Printing using anonymous inner class:");
         strings.forEach(new Consumer<String>() {
             @Override
             public void accept(String s) {
@@ -31,10 +31,10 @@ public class LambdasDemo {
         });
 
         // simplified lambda syntax (expression lambda)
-        System.out.println("Printing using lambda expression:");
+        System.out.println("com.laibao.java8.recipes.Printing using lambda expression:");
         strings.forEach(s -> System.out.println(s));
 
-        System.out.println("Printing using method reference:");
+        System.out.println("com.laibao.java8.recipes.Printing using method reference:");
         strings.forEach(System.out::println);
 
         int totalLength = strings.stream()
