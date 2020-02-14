@@ -13,7 +13,7 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
-/*
+/**
  * 一、使用 NIO 完成网络通信的三个核心：
  * 
  * 1. 通道（Channel）：负责连接
@@ -34,9 +34,12 @@ import org.junit.Test;
  */
 public class NonBlockingNIOTest {
 	
-	//客户端
+	/**
+	 * 客户端
+	 * @throws IOException
+	 */
 	@Test
-	public void client() throws IOException{
+	public void testNoneBlockingClient() throws IOException{
 		//1. 获取通道
 		SocketChannel sChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9898));
 		
@@ -61,9 +64,12 @@ public class NonBlockingNIOTest {
 		sChannel.close();
 	}
 
-	//服务端
+	/**
+	 * 服务端
+	 * @throws IOException
+	 */
 	@Test
-	public void server() throws IOException{
+	public void testNoneBlockingServer() throws IOException{
 		//1. 获取通道
 		ServerSocketChannel ssChannel = ServerSocketChannel.open();
 		
