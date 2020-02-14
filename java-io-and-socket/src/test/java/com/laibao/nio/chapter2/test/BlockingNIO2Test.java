@@ -13,49 +13,57 @@ import org.junit.Test;
 
 public class BlockingNIO2Test {
 	
-	//客户端
+	/**
+	 * 客户端
+	 * @throws IOException
+	 */
 	@Test
-	public void client() throws IOException{
-		SocketChannel sChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9898));
+	public void testClient() throws IOException{
+
+		SocketChannel socketChannel = SocketChannel.open(new InetSocketAddress("127.0.0.1", 9898));
 		
-		FileChannel inChannel = FileChannel.open(Paths.get("1.jpg"), StandardOpenOption.READ);
+		FileChannel fileChannel = FileChannel.open(Paths.get("1.jpg"), StandardOpenOption.READ);
 		
 		ByteBuffer buf = ByteBuffer.allocate(1024);
 		
-		while(inChannel.read(buf) != -1){
+		while(fileChannel.read(buf) != -1){
 			buf.flip();
-			sChannel.write(buf);
+			socketChannel.write(buf);
 			buf.clear();
 		}
 		
-		sChannel.shutdownOutput();
+		socketChannel.shutdownOutput();
 		
 		//接收服务端的反馈
 		int len = 0;
-		while((len = sChannel.read(buf)) != -1){
+		while((len = socketChannel.read(buf)) != -1){
 			buf.flip();
 			System.out.println(new String(buf.array(), 0, len));
 			buf.clear();
 		}
 		
-		inChannel.close();
-		sChannel.close();
+		fileChannel.close();
+		socketChannel.close();
 	}
 	
-	//服务端
+	/**
+	 * 服务端
+	 * @throws IOException
+	 */
 	@Test
-	public void server() throws IOException{
-		ServerSocketChannel ssChannel = ServerSocketChannel.open();
+	public void testServer() throws IOException{
+
+		ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
 		
 		FileChannel outChannel = FileChannel.open(Paths.get("2.jpg"), StandardOpenOption.WRITE, StandardOpenOption.CREATE);
 		
-		ssChannel.bind(new InetSocketAddress(9898));
+		serverSocketChannel.bind(new InetSocketAddress(9898));
 		
-		SocketChannel sChannel = ssChannel.accept();
+		SocketChannel socketChannel = serverSocketChannel.accept();
 		
 		ByteBuffer buf = ByteBuffer.allocate(1024);
 		
-		while(sChannel.read(buf) != -1){
+		while(socketChannel.read(buf) != -1){
 			buf.flip();
 			outChannel.write(buf);
 			buf.clear();
@@ -64,11 +72,11 @@ public class BlockingNIO2Test {
 		//发送反馈给客户端
 		buf.put("服务端接收数据成功".getBytes());
 		buf.flip();
-		sChannel.write(buf);
+		socketChannel.write(buf);
 		
-		sChannel.close();
+		socketChannel.close();
 		outChannel.close();
-		ssChannel.close();
+		serverSocketChannel.close();
 	}
 
 }
