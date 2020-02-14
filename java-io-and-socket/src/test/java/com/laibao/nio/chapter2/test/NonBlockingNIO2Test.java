@@ -12,13 +12,17 @@ import java.util.Scanner;
 
 import org.junit.Test;
 
+/**
+ * 模拟UDP协议的发送接收测试
+ */
 public class NonBlockingNIO2Test {
 	
 	@Test
-	public void send() throws IOException{
-		DatagramChannel dc = DatagramChannel.open();
+	public void testSend() throws IOException{
+
+		DatagramChannel datagramChannel = DatagramChannel.open();
 		
-		dc.configureBlocking(false);
+		datagramChannel.configureBlocking(false);
 		
 		ByteBuffer buf = ByteBuffer.allocate(1024);
 		
@@ -28,24 +32,25 @@ public class NonBlockingNIO2Test {
 			String str = scan.next();
 			buf.put((new Date().toString() + ":\n" + str).getBytes());
 			buf.flip();
-			dc.send(buf, new InetSocketAddress("127.0.0.1", 9898));
+			datagramChannel.send(buf, new InetSocketAddress("127.0.0.1", 9898));
 			buf.clear();
 		}
 		
-		dc.close();
+		datagramChannel.close();
 	}
 	
 	@Test
-	public void receive() throws IOException{
-		DatagramChannel dc = DatagramChannel.open();
+	public void testReceive() throws IOException{
+
+		DatagramChannel datagramChannel = DatagramChannel.open();
 		
-		dc.configureBlocking(false);
+		datagramChannel.configureBlocking(false);
 		
-		dc.bind(new InetSocketAddress(9898));
+		datagramChannel.bind(new InetSocketAddress(9898));
 		
 		Selector selector = Selector.open();
 		
-		dc.register(selector, SelectionKey.OP_READ);
+		datagramChannel.register(selector, SelectionKey.OP_READ);
 		
 		while(selector.select() > 0){
 			Iterator<SelectionKey> it = selector.selectedKeys().iterator();
@@ -56,7 +61,7 @@ public class NonBlockingNIO2Test {
 				if(sk.isReadable()){
 					ByteBuffer buf = ByteBuffer.allocate(1024);
 					
-					dc.receive(buf);
+					datagramChannel.receive(buf);
 					buf.flip();
 					System.out.println(new String(buf.array(), 0, buf.limit()));
 					buf.clear();
