@@ -13,6 +13,6 @@ public class ConnectHandler extends ChannelInboundHandlerAdapter {
     @Override
     //当一个新的连接已经被建立时，channelActive(ChannelHandlerContext)将会被调用
     public void channelActive(ChannelHandlerContext ctx) throws Exception {
-        System.out.println("Client " + ctx.channel().remoteAddress() + " connected");
+        System.out.println("DecoratorClient " + ctx.channel().remoteAddress() + " connected");
     }
 }

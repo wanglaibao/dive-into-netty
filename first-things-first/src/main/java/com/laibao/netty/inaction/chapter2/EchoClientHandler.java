@@ -18,7 +18,7 @@ public class EchoClientHandler  extends SimpleChannelInboundHandler<ByteBuf> {
     @Override
     protected void channelRead0(ChannelHandlerContext ctx, ByteBuf msg) throws Exception {
         //记录已接收消息的转储
-        System.out.println("Client received: " + msg.toString(CharsetUtil.UTF_8));
+        System.out.println("DecoratorClient received: " + msg.toString(CharsetUtil.UTF_8));
     }
 
     @Override
