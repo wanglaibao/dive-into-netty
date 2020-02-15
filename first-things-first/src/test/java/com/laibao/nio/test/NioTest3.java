@@ -1,9 +1,7 @@
 package com.laibao.nio.test;
 
 import org.junit.Test;
-
 import java.io.FileOutputStream;
-import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -12,11 +10,10 @@ public class NioTest3 {
     private static final String FILE_PATH = "NioTest3.txt";
 
     @Test
-    public void testWriteDataToFile() throws IOException {
+    public void testWriteDataToFile() {
 
-        try( FileOutputStream fileOutputStream = new FileOutputStream(FILE_PATH)){
-
-            FileChannel fileChannel = fileOutputStream.getChannel();
+        try( FileOutputStream fileOutputStream = new FileOutputStream(FILE_PATH);
+             FileChannel fileChannel = fileOutputStream.getChannel()){
 
             ByteBuffer byteBuffer = ByteBuffer.allocate(512);
 
@@ -29,8 +26,9 @@ public class NioTest3 {
             byteBuffer.flip();
 
             fileChannel.write(byteBuffer);
+        } catch (Exception ex) {
+            ex.printStackTrace();
         }
-
 
 
     }
