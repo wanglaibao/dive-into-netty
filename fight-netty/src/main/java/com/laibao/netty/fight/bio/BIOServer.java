@@ -5,6 +5,23 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.concurrent.*;
 
+/**
+ *  BIO 服务端示例
+ *
+ *  可以通过Telnet命令来进行测试
+ *
+ *  telnet 127.0.0.1 9898
+ *
+ *      Ctrl + ]
+ *
+ *      send hello,jinGe
+ *
+ *      serverSocket.accept()  阻塞方法
+ *
+ *      inputStream.read(bytes) 阻塞方法
+ *
+ *      inputStream.write("ddddd") 阻塞方法
+ */
 public class BIOServer {
 
     public static void main(String[] args) throws Exception {
@@ -22,7 +39,7 @@ public class BIOServer {
         ExecutorService threadPool = new ThreadPoolExecutor(theadsNumber,theadsNumber,0, TimeUnit.SECONDS,new ArrayBlockingQueue(10));
 
         //创建ServerSocket
-        ServerSocket serverSocket = new ServerSocket(6666);
+        ServerSocket serverSocket = new ServerSocket(9898);
 
         System.out.println("服务器启动了");
 
@@ -35,13 +52,13 @@ public class BIOServer {
             System.out.println("连接到一个客户端");
 
             //就创建一个线程，与之通讯(单独写一个方法)
-            /*
-            newCachedThreadPool.execute(new Runnable() {
-                public void run() { //我们重写
-                    //可以和客户端通讯
-                    handler(socket);
-                }
-            });
+            /**
+                newCachedThreadPool.execute(new Runnable() {
+                    public void run() { //我们重写
+                        //可以和客户端通讯
+                        handler(socket);
+                    }
+                });
             */
 
             threadPool.execute(() -> handler(socket));
@@ -60,12 +77,12 @@ public class BIOServer {
             //通过socket 获取输入流
             InputStream inputStream = socket.getInputStream();
 
-            /*  其实这样写应该更简洁一点
-            int read0;
-            while ((read0 =  inputStream.read(bytes)) != -1) {
-                System.out.println("线程信息 id =" + Thread.currentThread().getId() + " 名字=" + Thread.currentThread().getName());
-                System.out.println("read....");
-                System.out.println(new String(bytes, 0, read0)); //输出客户端发送的数据
+            /**  其实这样写应该更简洁一点
+                int read0;
+                while ((read0 =  inputStream.read(bytes)) != -1) {
+                    System.out.println("线程信息 id =" + Thread.currentThread().getId() + " 名字=" + Thread.currentThread().getName());
+                    System.out.println("read....");
+                    System.out.println(new String(bytes, 0, read0)); //输出客户端发送的数据
             }*/
 
             //循环的读取客户端发送的数据
