@@ -14,10 +14,9 @@ import java.util.concurrent.Executors;
 
 public class PooledServer {
 
-    ExecutorService pool = Executors.newFixedThreadPool(50);
+    private ExecutorService threadPool = Executors.newFixedThreadPool(10);
 
     private Selector selector;
-    //中文测试
 
     /**
      *
@@ -35,16 +34,11 @@ public class PooledServer {
      * @throws IOException
      */
     public void initServer(int port) throws IOException {
-        //
-        ServerSocketChannel serverChannel = ServerSocketChannel.open();
-        //
-        serverChannel.configureBlocking(false);
-        //
-        serverChannel.socket().bind(new InetSocketAddress(port));
-        //
+        ServerSocketChannel serverSocketChannel = ServerSocketChannel.open();
+        serverSocketChannel.configureBlocking(false);
+        serverSocketChannel.socket().bind(new InetSocketAddress(port));
         this.selector = Selector.open();
-
-        serverChannel.register(selector, SelectionKey.OP_ACCEPT);
+        serverSocketChannel.register(selector, SelectionKey.OP_ACCEPT);
         System.out.println("服务端启动成功！");
     }
 
@@ -54,76 +48,72 @@ public class PooledServer {
      */
     @SuppressWarnings("unchecked")
     public void listen() throws IOException {
-        // 轮询访问selector
+        /**
+         * selector轮询
+         */
         while (true) {
-            //
             selector.select();
-            //
-            Iterator ite = this.selector.selectedKeys().iterator();
-            while (ite.hasNext()) {
-                SelectionKey key = (SelectionKey) ite.next();
-                //
-                ite.remove();
-                //
-                if (key.isAcceptable()) {
-                    ServerSocketChannel server = (ServerSocketChannel) key.channel();
-                    //
-                    SocketChannel channel = server.accept();
-                    //
-                    channel.configureBlocking(false);
-                    //
-                    channel.register(this.selector, SelectionKey.OP_READ);
-                    //
-                } else if (key.isReadable()) {
-                    //
-                    key.interestOps(key.interestOps()&(~SelectionKey.OP_READ));
-                    //
-                    pool.execute(new ThreadHandlerChannel(key));
+            Iterator iterator = this.selector.selectedKeys().iterator();
+            while (iterator.hasNext()) {
+                SelectionKey selectionKey = (SelectionKey) iterator.next();
+                iterator.remove();
+                if (selectionKey.isAcceptable()) {
+                    ServerSocketChannel serverSocketChannel = (ServerSocketChannel) selectionKey.channel();
+                    SocketChannel socketChannel = serverSocketChannel.accept();
+                    socketChannel.configureBlocking(false);
+                    socketChannel.register(this.selector, SelectionKey.OP_READ);
+                } else if (selectionKey.isReadable()) {
+                    selectionKey.interestOps(selectionKey.interestOps()&(~SelectionKey.OP_READ));
+                    threadPool.execute(new HandlerChannelThread(selectionKey));
                 }
             }
         }
     }
 }
 
-/**
- *
- * @param
- * @throws IOException
- */
-class ThreadHandlerChannel extends Thread{
-    private SelectionKey key;
-    ThreadHandlerChannel(SelectionKey key){
-        this.key=key;
+class HandlerChannelThread extends Thread{
+
+    private SelectionKey selectionKey;
+
+    HandlerChannelThread(SelectionKey selectionKey){
+        this.selectionKey = selectionKey;
     }
+
+
     @Override
     public void run() {
-        //
-        SocketChannel channel = (SocketChannel) key.channel();
-        //
+        SocketChannel socketChannel = (SocketChannel) selectionKey.channel();
         ByteBuffer buffer = ByteBuffer.allocate(1024);
-        //
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
+
+            /*
             int size = 0;
-            while ((size = channel.read(buffer)) > 0) {
+            while ((size = socketChannel.read(buffer)) > 0) {
+                buffer.flip();
+                baos.write(buffer.array(),0,size);
+                buffer.clear();
+            }*/
+
+            int size;
+            while ((size = socketChannel.read(buffer)) > 0) {
                 buffer.flip();
                 baos.write(buffer.array(),0,size);
                 buffer.clear();
             }
             baos.close();
+
             //
             byte[] content=baos.toByteArray();
             ByteBuffer writeBuf = ByteBuffer.allocate(content.length);
             writeBuf.put(content);
             writeBuf.flip();
-            channel.write(writeBuf);//
-            if(size==-1){
-
-                channel.close();
+            socketChannel.write(writeBuf);//
+            if(size == -1){
+                socketChannel.close();
             }else{
-                //
-                key.interestOps(key.interestOps()|SelectionKey.OP_READ);
-                key.selector().wakeup();
+                selectionKey.interestOps(selectionKey.interestOps()|SelectionKey.OP_READ);
+                selectionKey.selector().wakeup();
             }
         }catch (Exception e) {
             System.out.println(e.getMessage());
