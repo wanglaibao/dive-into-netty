@@ -76,7 +76,7 @@ public class Handler implements Runnable{
     }
 
 
-    private void write() throws IOException {
+    private synchronized void write() throws IOException {
         int numBytes = 0;
 
         try {
@@ -103,7 +103,7 @@ public class Handler implements Runnable{
     /**
      * Process data by echoing input to output
      */
-    synchronized void process() {
+    private synchronized void process() {
         byte[] bytes;
         readBuf.flip();
         bytes = new byte[readBuf.remaining()];
