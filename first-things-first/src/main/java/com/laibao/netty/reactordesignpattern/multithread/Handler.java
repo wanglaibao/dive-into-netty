@@ -57,11 +57,16 @@ public class Handler implements Runnable{
                 socketChannel.close();
                 System.out.println("read(): client connection might have been dropped!");
             } else {
-                Reactor.workerPool.execute(new Runnable() {
-                    public void run() {
-                        process();
-                    }
-                });
+                Reactor.workerPool.execute(
+                        /*
+                        new Runnable() {
+                            public void run() {
+                                process();
+                            }
+                        }*/
+
+                        () -> process()
+                );
             }
         }
         catch (IOException ex) {
