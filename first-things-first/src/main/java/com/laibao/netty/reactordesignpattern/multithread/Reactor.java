@@ -19,6 +19,9 @@ public class Reactor implements Runnable{
 
     protected static ExecutorService workerPool;
 
+    static {
+        workerPool = Executors.newFixedThreadPool(WORKER_POOL_SIZE);
+    }
 
     public Reactor(int port) throws Exception {
         selector = Selector.open();
@@ -39,7 +42,6 @@ public class Reactor implements Runnable{
      * @param args
      */
     public static void main(String[] args) {
-        workerPool = Executors.newFixedThreadPool(WORKER_POOL_SIZE);
         try {
             new Thread(new Reactor(9090)).start();
         }
