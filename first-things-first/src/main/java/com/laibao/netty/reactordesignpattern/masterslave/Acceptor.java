@@ -13,7 +13,7 @@ public class Acceptor implements  Runnable{
 
     private int selIndex = 0;
 
-    //private TCPSubReactor r[] = new TCPSubReactor[cores];
+    private SubReactor[] subReactors = new SubReactor[RuntimeConstant.CORE_NUMBERS];
 
     private Thread[] threads = new Thread[RuntimeConstant.CORE_NUMBERS];
 
@@ -23,8 +23,8 @@ public class Acceptor implements  Runnable{
         try{
             for(int i = 0;i < RuntimeConstant.CORE_NUMBERS;i++){
                 selectors[i] = Selector.open();
-                //r[i] = new TCPSubReactor(selectors[i],ssc,i);
-                //threads[i] = new Thread(r[i]);
+                subReactors[i] = new SubReactor(selectors[i],serverSocketChannel,i);
+                threads[i] = new Thread(subReactors[i]);
                 threads[i].start();
             }
         }catch (Exception ex){
@@ -44,18 +44,18 @@ public class Acceptor implements  Runnable{
             if(socketChannel != null){
                 System.out.println("client has connected,ip is" + socketChannel.getLocalAddress());
                 socketChannel.configureBlocking(false);
-                r[selIndex].setRestart(true);
+                subReactors[selIndex].setRestart(true);
                 /**
                  * 使一个阻塞住的selector操作立即返回
                  */
                 selectors[selIndex].wakeup();
                 SelectionKey selectionKey = socketChannel.register(selectors[selIndex],SelectionKey.OP_READ);
                 selectors[selIndex].wakeup();//r[selIdx].
-                r[selIndex].setRestart(false);//重放线程
-                selectionKey.attach(new Handler(sk,sc));
+                subReactors[selIndex].setRestart(false);//重放线程
                 //给定key一个附加的TcpHandler
+                selectionKey.attach(new Handler(selectionKey,socketChannel));
                 if(++selIndex == selectors.length){
-                    selIndex++;
+                    selIndex = 0;
                 }
             }
         }catch (Exception ex){

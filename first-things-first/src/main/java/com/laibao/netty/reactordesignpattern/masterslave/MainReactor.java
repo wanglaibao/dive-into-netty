@@ -68,4 +68,11 @@ public class MainReactor implements Runnable{
             runnable.run();
         }
     }
+
+
+    public static void main(String[] args) {
+        MainReactor mainReactor = new MainReactor(8080);
+        Thread thread = new Thread(mainReactor);
+        thread.start();
+    }
 }
